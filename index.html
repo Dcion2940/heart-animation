@@ -24,8 +24,9 @@
     font-size: 24px;
     text-align: center;
     top: 50%;
-    width: 100%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the message exactly */
+    z-index: 10;
   }
 </style>
 </head>
@@ -56,9 +57,9 @@
       ctx.beginPath();
       ctx.arc(centerX + heart.x * scale, centerY + heart.y * scale, 2, 0, 2 * Math.PI);
       ctx.fill();
-      t += Math.PI / 360;
+      t += Math.PI / 180; // Increase the step size to make the animation faster
       if (t > 2 * Math.PI) clearInterval(interval);
-    }, 10);
+    }, 5); // Reduce the interval time to speed up the drawing
   }
 
   drawHeart();
