@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>爱心动画</title>
+<title>To My Love</title> <!-- Updated the title -->
 <style>
-  body, html { 
-    height: 100%; 
-    margin: 0; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    background: black; 
+  body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
     font-family: Arial, sans-serif;
   }
-  canvas { 
+  canvas {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -21,11 +21,11 @@
   .message {
     position: absolute;
     color: #FF99CC;
-    font-size: 24px;
+    font-size: 32px;
     text-align: center;
-    top: 50%;
+    top: 45%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center the message exactly */
+    transform: translate(-50%, -50%);
     z-index: 10;
   }
 </style>
@@ -58,8 +58,32 @@
       ctx.arc(centerX + heart.x * scale, centerY + heart.y * scale, 2, 0, 2 * Math.PI);
       ctx.fill();
       t += Math.PI / 180; // Increase the step size to make the animation faster
-      if (t > 2 * Math.PI) clearInterval(interval);
+      if (t > 2 * Math.PI) {
+        clearInterval(interval);
+        drawRandomHearts(centerX, centerY, scale); // Draw random hearts after the main heart is completed
+      }
     }, 5); // Reduce the interval time to speed up the drawing
+  }
+
+  function drawRandomHearts(cx, cy, scale) {
+    for (let i = 0; i < 50; i++) {
+      const angle = Math.random() * 2 * Math.PI;
+      const radius = scale * (20 + Math.random() * 30); // Random distance from the center
+      const x = cx + radius * Math.cos(angle);
+      const y = cy + radius * Math.sin(angle);
+      const size = 18 + Math.random() * 5; // Random size of the heart
+      drawMiniHeart(x, y, size);
+    }
+  }
+
+  function drawMiniHeart(x, y, size) {
+    ctx.fillStyle = '#FF69B4';
+    ctx.beginPath();
+    // Draw a small heart
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
+    ctx.bezierCurveTo(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
+    ctx.fill();
   }
 
   drawHeart();
