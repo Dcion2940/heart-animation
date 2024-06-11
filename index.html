@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>To My Love</title> <!-- Updated the title -->
+<title>To My Love</title>
 <style>
-  body, html {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: black;
+  body, html { 
+    height: 100%; 
+    margin: 0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background: black; 
     font-family: Arial, sans-serif;
   }
-  canvas {
+  canvas { 
     position: absolute;
     width: 100%;
     height: 100%;
@@ -38,6 +38,8 @@
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  let bigHeart = [];
+  let completedHeart = false;
 
   function heartFunction(t) {
     return {
@@ -48,38 +50,62 @@
 
   function drawHeart() {
     ctx.fillStyle = '#FF99CC';
-    const scale = 15; // Adjust size
+    const scale = 15;
     const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2 - 50; // Centering the heart vertically a bit higher
+    const centerY = canvas.height / 2 - 50;
     let t = 0;
     const interval = setInterval(() => {
       const heart = heartFunction(t);
+      bigHeart.push({x: centerX + heart.x * scale, y: centerY + heart.y * scale});
       ctx.beginPath();
       ctx.arc(centerX + heart.x * scale, centerY + heart.y * scale, 2, 0, 2 * Math.PI);
       ctx.fill();
-      t += Math.PI / 180; // Increase the step size to make the animation faster
+      t += Math.PI / 360;
       if (t > 2 * Math.PI) {
         clearInterval(interval);
-        drawRandomHearts(centerX, centerY, scale); // Draw random hearts after the main heart is completed
+        completedHeart = true; // Mark the heart as completed
+        drawRandomHearts(centerX, centerY, scale);
       }
-    }, 5); // Reduce the interval time to speed up the drawing
+    }, 5);
   }
+
+  let miniHearts = [];
 
   function drawRandomHearts(cx, cy, scale) {
     for (let i = 0; i < 50; i++) {
       const angle = Math.random() * 2 * Math.PI;
-      const radius = scale * (20 + Math.random() * 30); // Random distance from the center
+      const radius = scale * (20 + Math.random() * 30);
       const x = cx + radius * Math.cos(angle);
       const y = cy + radius * Math.sin(angle);
-      const size = 18 + Math.random() * 5; // Random size of the heart
-      drawMiniHeart(x, y, size);
+      const size = 18 + Math.random() * 10;
+      const dx = (Math.random() - 0.5) * 2;
+      const dy = (Math.random() - 0.5) * 2;
+      miniHearts.push({x, y, size, dx, dy});
     }
+    requestAnimationFrame(animateHearts);
+  }
+
+  function animateHearts() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (completedHeart) { // Only draw stored heart points if the heart has been completed
+      bigHeart.forEach(point => {
+        ctx.fillStyle = '#FF99CC';
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 2, 0, 2 * Math.PI);
+        ctx.fill();
+      });
+    }
+    miniHearts.forEach(heart => {
+      heart.x += heart.dx;
+      heart.y += heart.dy;
+      drawMiniHeart(heart.x, heart.y, heart.size);
+    });
+    requestAnimationFrame(animateHearts);
   }
 
   function drawMiniHeart(x, y, size) {
     ctx.fillStyle = '#FF69B4';
     ctx.beginPath();
-    // Draw a small heart
     ctx.moveTo(x, y);
     ctx.bezierCurveTo(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
     ctx.bezierCurveTo(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
