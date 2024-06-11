@@ -2,24 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>动态爱心粒子效果</title>
+<title>爱心动画</title>
 <style>
-  body, html {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: black;
+  body, html { 
+    height: 100%; 
+    margin: 0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background: black; 
+    font-family: Arial, sans-serif;
   }
-  canvas {
+  canvas { 
+    position: absolute;
     width: 100%;
     height: 100%;
+  }
+  .message {
+    position: absolute;
+    color: #FF99CC;
+    font-size: 24px;
+    text-align: center;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-50%);
   }
 </style>
 </head>
 <body>
 <canvas id="heartCanvas"></canvas>
+<div class="message">给我爱的娜娜<br>和小宝</div>
 <script>
   const canvas = document.getElementById('heartCanvas');
   const ctx = canvas.getContext('2d');
