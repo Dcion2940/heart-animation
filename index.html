@@ -23,7 +23,7 @@
     color: #FF99CC;
     font-size: 32px;
     text-align: center;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
@@ -38,6 +38,7 @@
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  const message = document.querySelector('.message');
   let bigHeart = [];
   let completedHeart = false;
 
@@ -53,6 +54,8 @@
     const scale = 15;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2 - 50;
+    message.style.left = `${centerX}px`;
+    message.style.top = `${centerY - scale * 2}px`;
     let t = 0;
     const interval = setInterval(() => {
       const heart = heartFunction(t);
